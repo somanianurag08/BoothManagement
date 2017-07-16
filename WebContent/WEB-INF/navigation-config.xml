@@ -1,0 +1,51 @@
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+
+	<!-- LOGIN | LOGOUT -->
+	<navigation-rule>
+		<from-view-id>/welcome/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/welcome/welcome.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>logout</from-outcome>
+			<to-view-id>/welcome/login.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+	<!-- ADMINISTRATION -->
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>users</from-outcome>
+			<to-view-id>/administration/users.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>appSettings</from-outcome>
+			<to-view-id>/administration/applicationConfiguration.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>importData</from-outcome>
+			<to-view-id>/administration/importData.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+	<!-- MASTER DATA -->
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>dailyCollection</from-outcome>
+			<to-view-id>/masterData/dailyCollections.xhtml</to-view-id>
+		</navigation-case>
+
+	</navigation-rule>
+
+	</faces-config>

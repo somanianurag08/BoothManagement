@@ -1,0 +1,93 @@
+body {
+	font-size: 11px;
+}
+
+￼￼￼￼.ui-widget, .ui-widget .ui-widget {
+	font-family : Helvetica, Verdana, Tahoma, Geneva, Arial,  sans-serif;  
+	font-size: 11px; 
+}
+
+.ui-dialog-content {
+	width: 600px;
+	height: 480px;
+}
+
+.uuid-column {
+	width: 100px;
+	text-align: center;
+}
+
+.bool-column {
+	width: 80px;
+	text-align: center;
+}
+
+.number-column {
+	width: 100px;
+	text-align: right;
+}
+
+.currency-column {
+	width: 150px;
+	text-align: right;
+}
+
+.date-column {
+	width: 100px;
+	text-align: center;
+}
+
+.selection-column {
+	width: 15px;
+	text-align: center;
+}
+
+.form-panel-3column, .form-panel-4column, .form-panel-6column  {
+	width: 100%;
+}
+
+.form-panel-3column .ui-selectonemenu, .form-panel-4column .ui-selectonemenu, .form-panel-6column .ui-inputfield  {
+	width: 100%;
+}
+
+.form-panel-3column .ui-inputfield, .form-panel-4column .ui-inputfield , .form-panel-6column .ui-inputfield {
+	width: 100%;
+}
+
+.form-panel-3column td, .form-panel-3column tr, .form-panel-4column td, .form-panel-4column tr, .form-panel-6column td, .form-panel-6column tr  {
+	border: none;
+	background: none;
+}
+
+.form-panel-3column td {
+	width: 33%;
+}
+
+.form-panel-4column td {
+	width: 25%
+}
+
+.form-panel-6column td {
+	width: 16.66%
+}
+
+
+.form-panel-simple td, .form-panel-simple tr{
+	border: none;
+	background: none;
+}
+
+.ui-outputlabel, .ui-chkbox-label {
+	font-weight: bold;
+}
+
+.vertical-align-top {
+	vertical-align: top;
+}
+ .layout {
+ 	background-color: green;
+ }
+ 
+ [readonly=readonly], [readonly] {
+ 	background-color: #eaf4fd !important;
+ }

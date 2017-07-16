@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/_templates/layout.xhtml">
+
+	<ui:define name="content">
+		<p:panel header="#{masterDataMsg['dailyCollection.title']}">
+			<h:form id="form">
+
+				<p:toolbar>
+					<p:toolbarGroup>
+						<p:commandButton value="#{componentsMsg['button.gotoGrid']}"
+							icon="ui-icon-calculator" action="products" ajax="false"
+							immediate="true" />
+						<p:separator />
+						<p:commandButton value="#{componentsMsg['button.create']}"
+							icon="ui-icon-plus" actionListener="#{productBean.create}"
+							immediate="true" ajax="false" />
+						<p:separator />
+						<p:commandButton value="#{componentsMsg['button.save']}"
+							ajax="false" icon="ui-icon-disk"
+							actionListener="#{productBean.saveProduct}"
+							disabled="#{!p:ifGranted('Administrator')}" />
+						<p:commandButton value="#{componentsMsg['button.cancel']}"
+							ajax="false" icon="ui-icon-cancel" action="products"
+							immediate="true" />
+					</p:toolbarGroup>
+				</p:toolbar>
+
+				<p:panelGrid styleClass="form-panel-4column">
+					<p:row>
+						<p:column>
+							<p:outputLabel for="txtUuid"
+								value="#{masterDataMsg['product.uuid']}" />
+						</p:column>
+						<p:column colspan="2">
+							<p:outputLabel for="txtName"
+								value="#{masterDataMsg['product.name']}" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:inputText id="txtUuid" value="#{productBean.product.uuid}"
+								readonly="true" />
+						</p:column>
+						<p:column colspan="2">
+							<p:inputText id="txtName" value="#{productBean.product.name}"
+								required="true">
+								<p:ajax event="change" process="@this" />
+							</p:inputText>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:outputLabel for="txtUpc_ean"
+								value="#{masterDataMsg['product.upc_ean']}" />
+						</p:column>
+						<p:column>
+							<p:outputLabel for="txtReference"
+								value="#{masterDataMsg['product.reference']}" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:inputText id="txtUpc_ean"
+								value="#{productBean.product.upc_ean}" />
+						</p:column>
+						<p:column>
+							<p:inputText id="txtReference"
+								value="#{productBean.product.reference}">
+								<p:ajax event="change" process="@this" />
+							</p:inputText>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:outputLabel for="mnuType"
+								value="#{masterDataMsg['product.type']}" />
+						</p:column>
+						<p:column>
+							<p:outputLabel for="txtUnit"
+								value="#{masterDataMsg['product.unit']} " />
+						</p:column>
+						<p:column>
+							<p:outputLabel for="txtCategory"
+								value="#{masterDataMsg['product.category']} " />
+						</p:column>
+						<p:column>
+							<p:outputLabel for="txtReplacement"
+								value="#{masterDataMsg['product.replacement']}" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:selectOneMenu id="mnuType" value="#{productBean.product.type}">
+								<f:selectItems value="#{productBean.types}" var="type"
+									itemValue="#{type}"
+									itemLabel="#{enumTranslationBean.getProductTypeName(type)}" />
+								<p:ajax event="change" update="@form" />
+							</p:selectOneMenu>
+						</p:column>
+						<p:column>
+							<p:selectOneMenu id="txtUnit" value="#{productBean.unitUuid}"
+								required="true">
+								<f:selectItems value="#{productBean.units}" var="uni"
+									itemValue="#{uni.uuid}" itemLabel="#{uni.name}" />
+							</p:selectOneMenu>
+						</p:column>
+						<p:column>
+							<p:selectOneMenu id="txtCategory"
+								value="#{productBean.categoryUuid}" required="true">
+								<f:selectItems value="#{productBean.categories}" var="cat"
+									itemValue="#{cat.uuid}" itemLabel="#{cat.name}" />
+							</p:selectOneMenu>
+						</p:column>
+						<p:column>
+							<p:selectOneMenu id="txtReplacement"
+								value="#{productBean.replacementUuid}">
+								<f:selectItem itemValue="-1"
+									itemLabel="#{componentsMsg['selectOneMenu.noChoice']}" />
+								<f:selectItems value="#{productBean.replacements}" var="rep"
+									itemValue="#{rep.uuid}" itemLabel="#{rep.name}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column />
+						<p:column>
+							<p:outputLabel for="txtRecommendedSalesPrice"
+								value="#{masterDataMsg['product.recommendedSalesPrice']}" />
+						</p:column>
+						<p:column />
+						<p:column>
+							<p:outputLabel for="txtRecommendedPurchasePrice"
+								value="#{masterDataMsg['product.recommendedPurchasePrice']}" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:selectBooleanCheckbox id="chkSaleable"
+								value="#{productBean.product.saleable}"
+								itemLabel="#{masterDataMsg['product.saleable']}"
+								disabled="#{productBean.product.type eq 'Resource'}">
+								<p:ajax event="change" update="txtRecommendedSalesPrice" />
+							</p:selectBooleanCheckbox>
+						</p:column>
+						<p:column>
+							<p:inputText id="txtRecommendedSalesPrice"
+								disabled="#{!productBean.product.saleable}"
+								value="#{productBean.product.recommendedSalesPrice}" />
+						</p:column>
+						<p:column>
+							<p:selectBooleanCheckbox id="chkPurchasable"
+								value="#{productBean.product.purchasable}"
+								itemLabel="#{masterDataMsg['product.purchasable']}">
+								<p:ajax event="change" update="txtRecommendedPurchasePrice" />
+							</p:selectBooleanCheckbox>
+						</p:column>
+						<p:column>
+							<p:inputText id="txtRecommendedPurchasePrice"
+								disabled="#{!productBean.product.purchasable}"
+								value="#{productBean.product.recommendedPurchasePrice}" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:selectBooleanCheckbox id="chkStorable"
+								value="#{productBean.product.storable}"
+								itemLabel="#{masterDataMsg['product.storable']}"
+								disabled="#{productBean.product.type eq 'Service'}">
+								<p:ajax event="change" process="@form" update="@form" />
+							</p:selectBooleanCheckbox>
+
+						</p:column>
+						<p:column>
+							<p:selectBooleanCheckbox id="chkManufactured"
+								value="#{productBean.product.manufactured}"
+								itemLabel="#{masterDataMsg['product.manufactured']}"
+								disabled="#{productBean.product.type eq 'Service'}">
+								<p:ajax event="change" process="@form" update="@form" />
+							</p:selectBooleanCheckbox>
+
+						</p:column>
+						<p:column>
+							<p:selectBooleanCheckbox id="chkCompoundProduct"
+								value="#{productBean.product.compoundProduct}"
+								disabled="#{productBean.product.type eq 'Service' or productBean.product.purchasable or productBean.product.manufactured}"
+								itemLabel="#{masterDataMsg['product.compoundProduct']}">
+								<p:ajax event="change" process="@form" update="@form" />
+							</p:selectBooleanCheckbox>
+						</p:column>
+						<p:column>
+							<p:selectBooleanCheckbox id="chkActive"
+								value="#{productBean.product.active}"
+								itemLabel="#{masterDataMsg['product.active']} " />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:outputLabel for="mnuAttributeSet"
+								value="#{masterDataMsg['product.attributeSet']}" />
+						</p:column>
+						<p:column rendered="#{productBean.product.type ne 'Service'}">
+							<p:outputLabel for="mnuBrand"
+								value="#{masterDataMsg['product.brand']}" />
+						</p:column>
+						<p:column rendered="#{productBean.product.type ne 'Service'}">
+							<p:outputLabel for="mnuModel"
+								value="#{masterDataMsg['product.model']}" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:selectOneMenu id="mnuAttributeSet"
+								value="#{productBean.attributeSetUuid}">
+								<f:selectItem itemValue="-1"
+									itemLabel="#{componentsMsg['selectOneMenu.noChoice']}" />
+								<f:selectItems value="#{productBean.attributeSets}"
+									var="attribute" itemValue="#{attribute.uuid}"
+									itemLabel="#{attribute.name}" />
+							</p:selectOneMenu>
+						</p:column>
+						<p:column rendered="#{productBean.product.type ne 'Service'}">
+							<p:selectOneMenu id="mnuBrand" value="#{productBean.brandUuid}">
+								<f:selectItem itemValue="-1"
+									itemLabel="#{componentsMsg['selectOneMenu.noChoice']}" />
+								<f:selectItems value="#{productBean.brands}" var="brand"
+									itemValue="#{brand.uuid}" itemLabel="#{brand.name}" />
+							</p:selectOneMenu>
+						</p:column>
+						<p:column rendered="#{productBean.product.type ne 'Service'}">
+							<p:selectOneMenu id="mnuModel" value="#{productBean.modelUuid}">
+								<f:selectItem itemValue="-1"
+									itemLabel="#{componentsMsg['selectOneMenu.noChoice']}" />
+								<f:selectItems value="#{productBean.models}" var="model"
+									itemValue="#{model.uuid}" itemLabel="#{model.name}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column colspan="4">
+							<p:outputLabel for="txtDescription"
+								value="#{masterDataMsg['product.description']}" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column colspan="4" rowspan="3">
+							<p:inputTextarea id="txtDescription"
+								value="#{productBean.product.description}" rows="5" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+
+
+
+
+
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:body>
+		<h:form>
+				<p:menu style="width: 150px">
+					
+					<p:submenu label="#{componentsMsg['menu.masterdata']}"  >
+						<p:menuitem ajax="false" action="businessPartners" value="#{masterDataMsg['masterDataPanel.businessPartners']}" />
+						<p:separator></p:separator>
+						<p:menuitem ajax="false" action="prices" value="#{masterDataMsg['masterDataPanel.prices']}" />
+					</p:submenu>
+					
+					<p:submenu label="#{componentsMsg['menu.product']}">
+						<p:menuitem ajax="false" action="products" value="Products" />
+						
+					</p:submenu>
+					
+					<p:submenu label="#{componentsMsg['menu.admnistration']}" >
+						<p:menuitem ajax="false" action="appSettings" value="#{masterDataMsg['masterDataPanel.appSettings']}" />
+						<p:menuitem ajax="false" action="users" value="#{administrationMsg['administrationpanel.users']}" />
+					</p:submenu>
+					
+				</p:menu>
+		</h:form>
+	</h:body>
+</html>

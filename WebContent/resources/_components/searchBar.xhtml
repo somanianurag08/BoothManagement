@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+	<composite:attribute name="criteria" required="true"
+		type="java.lang.String" />
+	<composite:attribute name="beginDate" type="java.util.Date" />
+	<composite:attribute name="endDate" type="java.util.Date" />
+	<composite:attribute name="statuses" type="[Ljava.lang.String;" />
+	
+	<composite:attribute name="criteriaChangeListener"
+		method-signature="void action(javax.faces.event.ValueChangeEvent)" />
+	<composite:attribute name="datesChangeListener"
+		method-signature="void action(javax.faces.event.ValueChangeEvent)" />
+	<composite:attribute name="statusesChangeListener"
+		method-signature="void action(javax.faces.event.ValueChangeEvent)" />
+	
+</composite:interface>
+
+<composite:implementation>
+	<p:panelGrid id="searchBar" styleClass="form-panel-simple">
+		<p:row>
+			
+			<p:column>
+				<p:outputLabel for="txtbeginDate" value="#{componentsMsg['search.dates']}" />
+			</p:column>
+		</p:row>
+		<p:row>
+			
+			<p:column>
+				<p:inputMask id="txtbeginDate" mask="99-99-9999" size="10" value="#{cc.attrs.beginDate}" 
+					valueChangeListener="#{cc.attrs.datesChangeListener}" >
+					<p:ajax event="change" update="@form" process="@this" />
+					<f:convertDateTime pattern="dd-MM-yyyy" />
+				</p:inputMask>
+				-
+				<p:inputMask mask="99-99-9999" size="10" value="#{cc.attrs.endDate}" valueChangeListener="#{cc.attrs.datesChangeListener}">
+					<p:ajax event="change" update="@form" process="@this" />
+					<f:convertDateTime pattern="dd-MM-yyyy" />
+				</p:inputMask>
+			</p:column>
+		</p:row>
+		<p:row>
+			<p:column>
+				<p:outputLabel for="mnuStatuses" value="#{componentsMsg['search.filter']}" />
+			</p:column>
+		</p:row>
+		<p:row>
+			<p:column colspan="2">
+				<p:selectManyCheckbox id="mnuStatuses" value="#{cc.attrs.statuses}" valueChangeListener="#{cc.attrs.statusesChangeListener}">
+					<p:ajax event="change" update="@form" process="@this" />
+					<f:selectItem itemLabel="#{componentsMsg['search.shiftOneAmount']}" itemValue="ShiftOneAmount" />
+					<f:selectItem itemLabel="#{componentsMsg['search.shiftTwoAmount']}" itemValue="ShiftTwoAmount" />
+					<f:selectItem itemLabel="#{componentsMsg['search.checkPostAmount']}" itemValue="CheckPostAmount" />
+					<!-- <f:selectItem itemLabel="#{componentsMsg['search.']}" itemValue="Open" />
+					<f:selectItem itemLabel="#{componentsMsg['search.criteria']}" itemValue="Closed" />
+					<f:selectItem itemLabel="#{componentsMsg['search.criteria']}" itemValue="Canceled" /> -->
+				</p:selectManyCheckbox>
+			</p:column>
+		</p:row>
+	</p:panelGrid>
+
+
+
+	
+</composite:implementation>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://java.sun.com/jsf/composite/_components">
+
+<ui:composition template="/_templates/layout.xhtml">
+	<ui:define name="content">
+		<p:panel header="#{masterDataMsg['dailyCollection.title']}">
+			<h:form id="form">
+				<b:searchBar beginDate="#{pricesBean.beginDate}" datesChangeListener="#{pricesBean.valuesChangeListener}" endDate="#{pricesBean.endDate}" 
+				                  statuses="#{pricesBean.statuses}" statusesChangeListener="#{pricesBean.valuesChangeListener}" />
+
+				<p:dataTable id="grdPrices" var="price" value="#{pricesBean.prices}" widgetVar="grdPrices" paginator="true" rows="25" paginatorPosition="bottom" lazy="true">
+
+				<!-- 	<f:facet name="header">
+						<p:toolbar>
+							<p:toolbarGroup>
+								<p:commandButton value="#{componentsMsg['button.create']}"
+									icon="ui-icon-plus" action="edit-price" ajax="false" />
+								<p:commandButton value="#{componentsMsg['grid.delete']}"
+									update="@form" icon="ui-icon-trash"
+									actionListener="#{pricesBean.deletePrice}" />
+							</p:toolbarGroup>
+						</p:toolbar>
+					</f:facet> -->
+
+					<p:column headerText="#{masterDataMsg['dailyCollection.date']}"
+						styleClass="uuid-column">
+						<p:commandLink action="edit-price" ajax="false">
+							<f:param name="uuid" value="#{price.id}" />
+							<h:outputText value="#{price.id}" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column headerText="#{masterDataMsg['dailyCollection.boothNo']}">
+						<h:outputText
+							value="#{enumTranslationBean.getProductCategory(price.productCategory)}"
+							rendered="#{! empty price.productCategory}" />
+					</p:column>
+
+					<p:column headerText="#{masterDataMsg['dailyCollection.shiftCode']}">
+						<h:outputText value="#{price.currentPrice}" />
+					</p:column>
+
+					<p:column headerText="#{masterDataMsg['dailyCollection.totalAmount']}">
+						<h:outputText value="#{price.previousPrice}" />
+
+					</p:column>
+
+					<p:column headerText="#{masterDataMsg['dailyCollection.checkPost']}">
+						<h:outputText value="#{price.openingPrice}"
+							rendered="#{! empty price.openingPrice}" />
+					</p:column>
+
+					<p:column headerText="#{masterDataMsg['dailyCollection.cancellation']}">
+						<h:outputText value="#{price.date}">
+							<f:convertDateTime pattern="dd-MM-yyyy hh:mm" />
+						</h:outputText>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>
+</html>

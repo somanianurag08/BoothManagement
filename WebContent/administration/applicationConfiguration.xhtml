@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/_templates/layout.xhtml">
+
+	<ui:define name="content">
+
+		<p:panel header="#{masterDataMsg['applicationConfiguration.title']}">
+			<h:form >
+				<p:panelGrid styleClass="form-panel-3column" >
+					<p:row>
+						<p:column>
+							<p:outputLabel for="txtUuid" value="#{masterDataMsg['applicationConfiguration.uuid']}" />
+						</p:column>
+						<p:column>
+							<p:outputLabel for="menuDefaultCurrency" value="#{masterDataMsg['applicationConfiguration.defaultCurrency']}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:inputText id="txtUuid" value="#{applicationBean.applicationConfiguration.uuid}" readonly="true" />
+						</p:column>
+						<p:column>
+							<p:selectOneMenu id="menuDefaultCurrency" disabled="#{!empty applicationBean.applicationConfiguration.defaultCurrency}"
+								value="#{applicationBean.defaultCurrencyUuid}">
+								<f:selectItems value="#{applicationBean.currencies}" var="cur" itemValue="#{cur.uuid}" itemLabel="#{cur.name}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column>
+							<p:outputLabel for="txtProductKey"
+								value="#{masterDataMsg['applicationConfiguration.productKey']}" /> 
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="3">
+							<p:inputTextarea id="txtProductKey" rows="10" cols="100" autoResize="false" 
+								value="#{applicationBean.applicationConfiguration.productKey}" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+
+				<p:separator />
+
+				<h:panelGroup layout="block" style="text-align: right">
+					<p:commandButton value="#{componentsMsg['button.save']}" disabled="#{!p:ifGranted('SystemAdministrator')}"
+						icon="ui-icon-disk" update="@form" actionListener="#{applicationBean.updateApplicationConfiguration}"/>
+				</h:panelGroup>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>
+</html>

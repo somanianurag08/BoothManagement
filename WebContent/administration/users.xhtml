@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/_templates/layout.xhtml">
+
+	<ui:define name="content">
+		<p:panel header="#{administrationMsg['users.title']}" >
+			<h:form id="form">
+				<p:dataTable id="grdUsers" var="user" value="#{usersBean.users}" selection="#{usersBean.user}" selectionMode="single" 
+					 paginator="true" rows="25"  paginatorPosition="bottom" lazy="true" >
+            		
+			        <p:ajax event="rowSelect" update="@form" />
+
+					<f:facet name="header">
+						<p:outputPanel layout="block" style="text-align: left;">
+							<p:commandButton value="#{componentsMsg['button.create']}"
+								icon="ui-icon-plus" update="@form"
+								oncomplete="userDialog.show()"
+								actionListener="#{usersBean.deselectUser}"
+								disabled="#{!p:ifGranted('SystemAdministrator') and !p:ifGranted('Administrator')}" />
+							<p:commandButton value="#{componentsMsg['grid.delete']}"
+								icon="ui-icon-trash" update="@form"
+								actionListener="#{usersBean.deleteUser}"
+								disabled="#{!(p:ifGranted('SystemAdministrator') or p:ifGranted('Administrator')) or usersBean.user.uuid eq -1}" />
+						</p:outputPanel>
+					</f:facet>
+					
+					<p:column headerText="#{administrationMsg['user.uuid']}" styleClass="uuid-column">
+						<p:commandLink value="#{user.uuid}" update="@form" oncomplete="userDialog.show()" 
+							actionListener="#{usersBean.selectUser}">
+							<f:param name="uuid" value="#{user.uuid}" />
+						</p:commandLink>
+					</p:column>
+					
+			        <p:column sortBy="#{user.username}" headerText="#{administrationMsg['user.username']}">  
+			            <h:outputText value="#{user.username}" />  
+			        </p:column>
+			  
+			        <p:column headerText="#{administrationMsg['user.fullname']}">  
+			            <h:outputText value="#{user.fullname}" />  
+			        </p:column>
+			        
+			        <p:column headerText="#{administrationMsg['user.businessPartner']}">  
+			            <h:outputText value="#{user.businessPartner.name}" rendered="#{! empty user.businessPartner}" />  
+			        </p:column>  
+			  
+			        <p:column headerText="#{administrationMsg['user.active']}" styleClass="bool-column">  
+			            <h:graphicImage library="_images" name="yes.png" rendered="#{user.active}" />  
+			        </p:column>  
+			    </p:dataTable>  
+				
+				<p:dialog widgetVar="userDialog" styleClass="popup-form" hideEffect="fade"
+					resizable="false"
+					header="#{administrationMsg['users.edittitle']}" >
+					<p:panelGrid id="userForm" styleClass="form-panel-3column">
+						<p:row>
+							<p:column>
+								<p:outputLabel for="txtUuid" value="#{administrationMsg['user.uuid']}"  />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:inputText id="txtUuid" readonly="true" value="#{usersBean.user.uuid }" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel for="txtUsername" value="#{administrationMsg['user.username']}" />
+							</p:column>
+							<p:column>
+								<p:outputLabel for="txtFullname" value="#{administrationMsg['user.fullname']}" />
+							</p:column>
+							<p:column>
+								<p:outputLabel for="txtPassword" value="#{administrationMsg['user.password']}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:inputText id="txtUsername" readonly="#{usersBean.user.uuid ne -1}" value="#{usersBean.user.username}" />
+							</p:column>
+							<p:column>
+								<p:inputText id="txtFullname" value="#{usersBean.user.fullname}" />
+							</p:column>
+							<p:column>
+								<p:password id="txtPassword" value="#{usersBean.password}" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					
+					<p:fieldset id="usersPanel" legend="#{administrationMsg['user.groups']}" toggleable="true" toggleSpeed="500" style="margin-top: 15px" >
+						<h:panelGrid columns="3">
+							<p:selectManyCheckbox value="#{usersBean.selectedInFirstColumn}" layout="pageDirection">
+								<f:selectItems value="#{usersBean.firstColumnGroup}" var="group" 
+									itemLabel="#{enumTranslationBean.getGroupName(group.name())}" />
+							</p:selectManyCheckbox>
+							<p:selectManyCheckbox value="#{usersBean.selectedInSecondColumn}" layout="pageDirection">
+								<f:selectItems value="#{usersBean.secondColumnGroup}" var="group" 
+									itemLabel="#{enumTranslationBean.getGroupName(group.name())}" />
+							</p:selectManyCheckbox>
+							<p:selectManyCheckbox value="#{usersBean.selectedInThirdColumn}" layout="pageDirection">
+								<f:selectItems value="#{usersBean.thirdColumnGroup}" var="group" 
+									itemLabel="#{enumTranslationBean.getGroupName(group.name())}" />
+							</p:selectManyCheckbox>
+						</h:panelGrid>
+					</p:fieldset>
+					
+					<p:fieldset id="notesPanel" legend="#{administrationMsg['user.notes']}" toggleable="true" toggleSpeed="500" 
+							style="margin-top: 15px" collapsed="true" >
+						<p:inputTextarea rows="10" cols="50" autoResize="false" value="#{usersBean.user.notes }" />
+					</p:fieldset>
+					
+					<p:fieldset id="auditPanel"  legend="#{componentsMsg['audit.title']}" toggleable="true" toggleSpeed="500" 
+							style="margin-top: 15px"  collapsed="true">
+						<p:panelGrid styleClass="form-panel-4column">
+							<h:outputText value="#{componentsMsg['audit.creationDate']}" />
+							<h:outputText value="#{componentsMsg['audit.creationUser']}" />
+							<h:outputText value="#{componentsMsg['audit.lastModificationDate']}"  />
+							<h:outputText value="#{componentsMsg['audit.lastModificationUser']}"  />
+							
+							<h:outputText value="#{auditBean.getCreationDate('ao.co.safira.model.auth.User', usersBean.user.uuid)}" >
+								<f:convertDateTime pattern="dd-MM-yyyy hh:mm" />
+							</h:outputText>
+							
+							<h:outputText value="#{auditBean.getCreationUser('ao.co.safira.model.auth.User', usersBean.user.uuid)}" />
+							
+							<h:outputText value="#{auditBean.getLastModificationDate('ao.co.safira.model.auth.User', usersBean.user.uuid)}" >
+								<f:convertDateTime pattern="dd-MM-yyyy hh:mm" />
+							</h:outputText>
+							
+							<h:outputText value="#{auditBean.getLastModificationUser('ao.co.safira.model.auth.User', usersBean.user.uuid)}" />
+							
+						</p:panelGrid>        
+	    			</p:fieldset>
+	    		
+	    			<p:separator />
+	    			
+	    			<h:panelGroup layout="block" style="text-align: right">
+	    				<p:commandButton value="#{componentsMsg['button.save']}" icon="ui-icon-disk" update="@form" 
+	    					actionListener="#{usersBean.saveUser}" oncomplete="userDialog.hide()"  />
+	    				<p:commandButton value="#{componentsMsg['button.cancel']}" onclick="userDialog.hide()" />
+	    			</h:panelGroup>
+	    		</p:dialog>  
+
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>
+</html>

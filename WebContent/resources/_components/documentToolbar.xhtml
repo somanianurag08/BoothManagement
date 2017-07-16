@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+	<composite:attribute name="disableSubmit" default="false"
+		type="java.lang.Boolean" />
+	<composite:attribute name="disableApprove" default="false"
+		type="java.lang.Boolean" />
+	<composite:attribute name="disableDispatch" default="true"
+		type="java.lang.Boolean" />
+	<composite:attribute name="disableReceive" default="true"
+		type="java.lang.Boolean" />
+	<composite:attribute name="disableEdit" default="false"
+		type="java.lang.Boolean" />
+	<composite:attribute name="disableCancel" default="false"
+		type="java.lang.Boolean" />
+	<composite:attribute name="disableClose" default="true"
+		type="java.lang.Boolean" />
+	<composite:attribute name="disablePrint" default="false"
+		type="java.lang.Boolean" />
+	<composite:attribute name="disablePreview" default="false"
+		type="java.lang.Boolean" />
+
+	<composite:attribute name="disableTakeOwnership" default="false"
+		type="java.lang.Boolean" />
+	<composite:attribute name="disableAssignOwnership" default="false"
+		type="java.lang.Boolean" />
+
+	<composite:attribute name="showClose" default="false"
+		type="java.lang.Boolean" />
+	<composite:attribute name="showDispatch" default="false"
+		type="java.lang.Boolean" />
+	<composite:attribute name="showReceive" default="false"
+		type="java.lang.Boolean" />
+	<composite:attribute name="documentType" type="java.lang.String" />
+	<composite:attribute name="documentUuid" type="java.lang.Long" />
+
+	<composite:attribute name="gotoGridAction"
+		method-signature="java.lang.String action()" />
+	<composite:attribute name="createListener"
+		method-signature="void action(javax.faces.event.ActionEvent)" />
+	<composite:attribute name="submitListener"
+		method-signature="void action(javax.faces.event.ActionEvent)" />
+	<composite:attribute name="approveListener"
+		method-signature="void action(javax.faces.event.ActionEvent)" />
+	<composite:attribute name="dispatchListener"
+		method-signature="void action(javax.faces.event.ActionEvent)" />
+	<composite:attribute name="receiveListener"
+		method-signature="void action(javax.faces.event.ActionEvent)" />
+	<composite:attribute name="editListener"
+		method-signature="void action(javax.faces.event.ActionEvent)" />
+	<composite:attribute name="cancelAction"
+		method-signature="java.lang.String action()" />
+	<composite:attribute name="closeListener"
+		method-signature="void action(javax.faces.event.ActionEvent)" />
+	<composite:attribute name="previewListener"
+		method-signature="void action(javax.faces.event.ActionEvent)" />
+	<composite:attribute name="printListener"
+		method-signature="void action(javax.faces.event.ActionEvent)" />
+	<composite:attribute name="takeOwnershipListener"
+		method-signature="void action(javax.faces.event.ActionEvent)" />
+	<composite:attribute name="assignOwnershipOnclick"
+		type="java.lang.String" />
+</composite:interface>
+
+<composite:implementation>
+	<p:toolbar>
+		<p:toolbarGroup>
+			<p:commandButton id="gotoGridButton"
+				value="#{componentsMsg['button.gotoGrid']}" icon="ui-icon-calculator"
+				action="#{cc.attrs.gotoGridAction}" ajax="false" />
+			<p:separator />
+			<p:commandButton value="#{componentsMsg['button.create']}"
+				icon="ui-icon-plus"
+				actionListener="#{cc.attrs.createListener}" ajax="false" />
+			<p:commandButton id="submitButton"
+				value="#{componentsMsg['button.submit']}" icon="ui-icon-carat-1-e"
+				actionListener="#{cc.attrs.submitListener}" ajax="false"
+				rendered="#{!cc.attrs.disableSubmit}" />
+			<p:commandButton value="#{componentsMsg['button.approve']}"
+				icon="ui-icon-check"
+				actionListener="#{cc.attrs.approveListener}" ajax="false"
+				rendered="#{!cc.attrs.disableApprove}" />
+			<p:commandButton value="#{componentsMsg['button.dispatch']}"
+				icon="ui-icon-carat-1-e"
+				actionListener="#{cc.attrs.dispatchListener}" ajax="false"
+				rendered="#{cc.attrs.showDispatch and !cc.attrs.disableDispatch}"/>
+			<p:commandButton value="#{componentsMsg['button.receive']}"
+				icon="ui-icon-carat-1-e"
+				actionListener="#{cc.attrs.receiveListener}" ajax="false"
+				rendered="#{cc.attrs.showReceive and !cc.attrs.disableReceive}"/>
+			
+			<p:commandButton value="#{componentsMsg['grid.edit']}"
+				icon="ui-icon-pencil" actionListener="#{cc.attrs.editListener}"
+				ajax="false" rendered="#{!cc.attrs.disableEdit}" />
+			<p:commandButton value="#{componentsMsg['button.cancel']}"
+				icon="ui-icon-cancel" ajax="false" action="#{cc.attrs.cancelAction}"
+				rendered="#{!cc.attrs.disableCancel}" />
+			<p:commandButton value="#{componentsMsg['button.close']}"
+				icon="ui-icon-cancel" ajax="false"
+				actionListener="#{cc.attrs.closeListener}"
+				rendered="#{cc.attrs.showClose and !cc.attrs.disableClose}" />
+			<p:separator />
+			<p:commandButton value="#{componentsMsg['button.print']}"
+				icon="ui-icon-print" rendered="#{!cc.attrs.disablePrint}"
+				onclick="#{utilitiesBean.print('report', cc.attrs.documentType, 'uuid', cc.attrs.documentUuid)}"
+				actionListener="#{cc.attrs.printListener}" />
+			
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="#{componentsMsg['button.takeOwnership']}"
+				icon="ui-icon-person"
+				actionListener="#{cc.attrs.takeOwnershipListener}" ajax="false"
+				disabled="#{cc.attrs.disableTakeOwnership}" />
+			<p:commandButton value="#{componentsMsg['button.assignOwnership']}"
+				onclick="#{cc.attrs.assignOwnershipOnclick}"
+				disabled="#{cc.attrs.disableAssignOwnership}" />
+		</p:toolbarGroup>
+	</p:toolbar>
+</composite:implementation>
+
+</html>

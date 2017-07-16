@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"> 
+	
+	<h:body>
+		<h:form>
+				<p:menu style="width: 150px">
+					
+					<p:submenu label="#{componentsMsg['menu.masterdata']}"  >
+						<p:menuitem ajax="false" action="dailyCollection" value="#{masterDataMsg['masterDataPanel.dailyCollection']}" />
+						<p:menuitem ajax="false" action="prices" value="#{masterDataMsg['masterDataPanel.exmptedVehicle']}" />
+						<p:menuitem ajax="false" action="prices" value="#{masterDataMsg['masterDataPanel.vehicleInformation']}" />
+						<p:menuitem ajax="false" action="businessPartners" value="#{masterDataMsg['masterDataPanel.checkPostCollection']}" />
+					</p:submenu>
+					
+					<p:submenu label="#{componentsMsg['menu.manualData']}"  >
+						<p:menuitem ajax="false" action="prices" value="#{masterDataMsg['masterDataPanel.manualBarrierOpen']}" />
+						<p:menuitem ajax="false" action="prices" value="#{masterDataMsg['masterDataPanel.cancleHistory']}" />
+					</p:submenu>
+					
+					<p:submenu label="#{componentsMsg['menu.accountSetting']}">
+						<p:menuitem ajax="false" action="products" value="#{masterDataMsg['masterDataPanel.whiteListVehicle']}" />
+						<p:menuitem ajax="false" action="products" value="#{masterDataMsg['masterDataPanel.shiftInformation']}" />
+						<p:menuitem ajax="false" action="products" value="#{masterDataMsg['masterDataPanel.shiftWorkerInformation']}" />
+					</p:submenu>
+					
+					<p:submenu label="#{componentsMsg['menu.report']}" >
+						<p:menuitem ajax="false" action="appSettings" value="#{masterDataMsg['masterDataPanel.sms']}" />
+						<p:menuitem ajax="false" action="users" value="#{masterDataMsg['administrationpanel.reports']}" />
+					</p:submenu>
+					
+					<p:submenu label="#{componentsMsg['menu.admnistration']}" >
+						<p:menuitem ajax="false" action="appSettings" value="#{masterDataMsg['masterDataPanel.appSettings']}" />
+						<p:menuitem ajax="false" action="users" value="#{administrationMsg['administrationpanel.users']}" />
+					</p:submenu>
+					
+					
+					
+				</p:menu>
+		</h:form>
+	</h:body>
+</html>

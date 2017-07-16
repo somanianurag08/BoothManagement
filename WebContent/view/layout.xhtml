@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Booth Manager
+		</title>
+
+	</h:head>
+	<h:body>
+
+		<h:outputStylesheet name="main.css" library="_stylesheets" />
+		<p:growl id="messages" showDetail="true" autoUpdate="true"
+			life="10000" />
+		<div
+			style="position: absolute; left: 3px; right: 3px; top: 3px;">
+			<ui:insert name="header">
+				<ui:include src="menu.xhtml" />
+			</ui:insert>
+		</div>
+
+		<div
+			style="position: absolute; top: 48px; left: 3px; width: 180px; ">
+			<ui:insert name="shortcuts">
+				<ui:include src="shortcuts.xhtml" />				
+			</ui:insert>
+		</div>
+
+		<div
+			style="position: absolute; top: 48px; left: 185px; right: 3px; bottom: 25px; overflow: scroll;">
+			<ui:insert name="content" />
+		</div>
+
+		<div style="position: absolute; height: 20px; bottom: 0px;">
+			<ui:insert name="footer">
+				<ui:include src="footer.xhtml" />
+			</ui:insert>
+
+		</div>
+	</h:body>
+</f:view>
+</html>
